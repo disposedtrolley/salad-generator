@@ -1,7 +1,7 @@
 import pytest
 import ingredient
 
-sample_flavour_profiles: ingredient.FlavourProfiles = [
+sample_flavor_profiles: ingredient.FlavorProfiles = [
     {"name": "sweet",
      "occurrences": 10},
     {"name": "sour",
@@ -28,10 +28,18 @@ class TestIngredient(object):
         apple = ingredient.Ingredient("Apple",
                                       "Fruit",
                                       123,
-                                      sample_flavour_profiles)
+                                      sample_flavor_profiles)
 
         assert(apple.name == "Apple")
         assert(apple.category == "Fruit")
         assert(apple.id == 123)
-        assert(apple.flavour_profiles == sample_flavour_profiles)
+        assert(apple.flavor_profiles == sample_flavor_profiles)
 
+    def test_get_top_flavors(self):
+        apple = ingredient.Ingredient("Apple",
+                                      "Fruit",
+                                      123,
+                                      sample_flavor_profiles)
+
+        assert(apple.get_top_flavors() == sample_flavor_profiles[:3])
+        assert(apple.get_top_flavors(10) == sample_flavor_profiles[:1])
