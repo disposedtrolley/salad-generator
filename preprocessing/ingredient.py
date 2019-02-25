@@ -1,6 +1,6 @@
 """Defines the Ingredient class to store processed information on an ingredient.
 """
-
+import json
 from typing import Dict, List
 import math
 
@@ -35,3 +35,8 @@ class Ingredient:
         """Returns the top flavor from the flavor_profiles array.
         """
         return self.flavor_profiles[0]
+
+    def json(self):
+        """Returns a stringified JSON representation of the ingredient.
+        """
+        return json.dumps(self.__dict__)

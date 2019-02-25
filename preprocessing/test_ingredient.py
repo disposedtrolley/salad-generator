@@ -51,3 +51,11 @@ class TestIngredient(object):
                                       sample_flavor_profiles)
 
         assert(apple.get_top_flavor() == sample_flavor_profiles[0])
+
+    def test_json(self):
+        apple = ingredient.Ingredient("Apple",
+                                      "Fruit",
+                                      123,
+                                      sample_flavor_profiles)
+
+        assert(apple.json() == """{"name": "Apple", "category": "Fruit", "id": 123, "flavor_profiles": [{"name": "sweet", "occurrences": 10}, {"name": "sour", "occurrences": 8}, {"name": "fruity", "occurrences": 8}, {"name": "bitter", "occurrences": 6}, {"name": "pungent", "occurrences": 5}, {"name": "herbal", "occurrences": 2}, {"name": "watery", "occurrences": 2}, {"name": "candy", "occurrences": 2}, {"name": "fresh", "occurrences": 2}, {"name": "floral", "occurrences": 1}]}""")
