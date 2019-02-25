@@ -43,3 +43,11 @@ class TestIngredient(object):
 
         assert(apple.get_top_flavors() == sample_flavor_profiles[:3])
         assert(apple.get_top_flavors(10) == sample_flavor_profiles[:1])
+
+    def test_get_top_flavor(self):
+        apple = ingredient.Ingredient("Apple",
+                                      "Fruit",
+                                      123,
+                                      sample_flavor_profiles)
+
+        assert(apple.get_top_flavor() == sample_flavor_profiles[0])
