@@ -6,20 +6,23 @@ import sys
 sys.path.append(".")
 from typing import Dict, List
 import json
-from models.ingredient import Ingredient, FlavorProfiles
+from models.ingredient import Ingredient, FlavorProfiles, IngredientType
 from models.molecule import Molecule
 
-def read_data(root_path: str) -> List[Dict]:
+def read_data(root_path: str) -> List[Ingredient]:
     """ Reads all JSON files within a specified root directory, where
     subfolders of the directory are used as the "type" property of the
-    ingredient.
+    ingredient. Returns a list of Ingredient objects.
     """
-    ingredients: List[Dict] = []
+    ingredients: List[Ingredient] = []
 
     for root, _, files in os.walk(root_path):
         for name in files:
             file_path: str = os.path.join(root, name)
-            ingredients.append(read_json(file_path))
+            parent_folder_name: str = file_path.split("/")[2]
+            ingredient: Ingredient = construct_ingredient(read_json(file_path),
+                                                          parent_folder_name)
+            ingredients.append(ingredient)
 
     return ingredients
 
@@ -30,9 +33,32 @@ def read_json(path: str) -> Dict:
     contents: str = input_file.read()
     return json.loads(contents)
 
+def construct_ingredient(json: Dict, type: str) -> Ingredient:
+    """ Returns an Ingredient object from a given JSON file
+    """
+    ingredient_type = IngredientType(type)
+
+    molecules: List[Molecule] = [Molecule(m["pubchem_id"], m["common_name"],
+                                          tuple(m["fooddb_flavor_profile"].split("@")))
+                                          for m in json["molecules"]]
+    return Ingredient(json["entity_alias_readable"], json["category_readable"],
+                      json["entity_id"], molecules, ingredient_type)
+
+def similarity(ing_a: Ingredient, ing_b: Ingredient) -> float:
+    """ Returns the number of shared molecules between the supplied
+    ingredients.
+    """
+    ing_a_molecules = ing_a.get_molecule_ids()
+    ing_b_molecules = ing_b.get_molecule_ids()
+
+    similar: List = list(set(ing_a_molecules).intersection(ing_b_molecules))
+
+    return len(similar)
+
 def __main__():
     i = read_data("./data")
     print(i[0])
+    print(i[0].get_top_flavors(100))
 
 if __name__ == "__main__":
     __main__()

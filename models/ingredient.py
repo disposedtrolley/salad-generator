@@ -74,6 +74,20 @@ class Ingredient:
         """
         return self.molecules
 
+    def get_molecule_ids(self) -> List[int]:
+        """Returns this ingredient's molecules as a list of Pubchem IDs.
+        """
+        return [x.get_pubchem_id() for x in self.molecules]
+
+    def get_category(self) -> str:
+        return self.category
+
+    def get_type(self) -> IngredientType:
+        return self.type
+
+    def get_name(self) -> str:
+        return self.name
+
     def json(self):
         """Returns a stringified JSON representation of the ingredient.
         """

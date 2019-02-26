@@ -1,7 +1,7 @@
 import pytest
 from typing import List
-from ingredient import Ingredient, FlavorProfiles, IngredientType
-from molecule import Molecule
+from .ingredient import Ingredient, FlavorProfiles, IngredientType
+from .molecule import Molecule
 
 sample_molecules: List[Molecule] = [
     Molecule(323, "coumarin", ("bitter", "green", "sweet")),
@@ -46,6 +46,12 @@ class TestIngredient:
                            IngredientType.BASE)
 
         assert pasta.get_top_flavor() == expected_flavor_profiles[0]
+
+    def test_get_molecule_ids(self):
+        pasta = Ingredient("Pasta", "Bakery", 484, sample_molecules,
+                           IngredientType.BASE)
+
+        assert pasta.get_molecule_ids() == [323, 107971, 7284]
 
     def test_json(self):
         pass

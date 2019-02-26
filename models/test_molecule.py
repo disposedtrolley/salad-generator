@@ -1,5 +1,5 @@
 import pytest
-from molecule import Molecule
+from .molecule import Molecule
 
 class TestMolecule:
     def test_checks_init_params(self):
