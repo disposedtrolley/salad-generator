@@ -1,61 +1,46 @@
 import pytest
-import ingredient
+from typing import List
+from ingredient import Ingredient, FlavorProfiles
+from molecule import Molecule
 
-sample_flavor_profiles: ingredient.FlavorProfiles = [
-    {"name": "sweet",
-     "occurrences": 10},
-    {"name": "sour",
-     "occurrences": 8},
-    {"name": "fruity",
-     "occurrences": 8},
-    {"name": "bitter",
-     "occurrences": 6},
-    {"name": "pungent",
-     "occurrences": 5},
-    {"name": "herbal",
-     "occurrences": 2},
-    {"name": "watery",
-     "occurrences": 2},
-    {"name": "candy",
-     "occurrences": 2},
-    {"name": "fresh",
-     "occurrences": 2},
-    {"name": "floral",
-     "occurrences": 1}]
+sample_molecules: List[Molecule] = [
+    Molecule(323, "coumarin", ("bitter", "green", "sweet")),
+    Molecule(107971, "Daidzin", ("bitter",)),
+    Molecule(7284, "2-Methy1butyra1dehyde", ("musty", "coffee", "cocoa",
+                                             "nutty", "almond"))]
 
-class TestIngredient(object):
+expected_flavor_profiles: FlavorProfiles = [
+            ("bitter", 2),
+            ("green", 1),
+            ("sweet", 1),
+            ("musty", 1),
+            ("coffee", 1),
+            ("cocoa", 1),
+            ("nutty", 1),
+            ("almond", 1)]
+
+class TestIngredient:
     def test_sets_instance_vars(self):
-        apple = ingredient.Ingredient("Apple",
-                                      "Fruit",
-                                      123,
-                                      sample_flavor_profiles)
+        pasta = Ingredient("Pasta", "Bakery", 484, sample_molecules)
+        assert pasta.name == "pasta"
+        assert pasta.category == "bakery"
+        assert pasta.id == 484
+        assert pasta.molecules == sample_molecules
 
-        assert(apple.name == "Apple")
-        assert(apple.category == "Fruit")
-        assert(apple.id == 123)
-        assert(apple.flavor_profiles == sample_flavor_profiles)
+    def test_extract_flavor_profiles_from_molecules(self):
+        pasta = Ingredient("Pasta", "Bakery", 484, sample_molecules)
+
+        assert pasta._extract_flavor_profiles_from_molecules()  == expected_flavor_profiles
 
     def test_get_top_flavors(self):
-        apple = ingredient.Ingredient("Apple",
-                                      "Fruit",
-                                      123,
-                                      sample_flavor_profiles)
+        pasta = Ingredient("Pasta", "Bakery", 484, sample_molecules)
 
-        assert(apple.get_top_flavors() == sample_flavor_profiles[:3])
-        assert(apple.get_top_flavors(10) == sample_flavor_profiles[:1])
+        assert pasta.get_top_flavors() == expected_flavor_profiles[:2]
 
     def test_get_top_flavor(self):
-        apple = ingredient.Ingredient("Apple",
-                                      "Fruit",
-                                      123,
-                                      sample_flavor_profiles)
+        pasta = Ingredient("Pasta", "Bakery", 484, sample_molecules)
 
-        assert(apple.get_top_flavor() == sample_flavor_profiles[0])
+        assert pasta.get_top_flavor() == expected_flavor_profiles[0]
 
     def test_json(self):
-        apple = ingredient.Ingredient("Apple",
-                                      "Fruit",
-                                      123,
-                                      sample_flavor_profiles)
-
-        assert(apple.json() == """{"name": "Apple", "category": "Fruit", "id": 123, "flavor_profiles": [{"name": "sweet", "occurrences": 10}, {"name": "sour", "occurrences": 8}, {"name": "fruity", "occurrences": 8}, {"name": "bitter", "occurrences": 6}, {"name": "pungent", "occurrences": 5}, {"name": "herbal", "occurrences": 2}, {"name": "watery", "occurrences": 2}, {"name": "candy", "occurrences": 2}, {"name": "fresh", "occurrences": 2}, {"name": "floral", "occurrences": 1}]}""")
+        pass
