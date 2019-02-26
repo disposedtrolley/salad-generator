@@ -4,7 +4,7 @@ from enum import Enum
 import json
 from typing import List, Tuple, Dict
 import math
-from molecule import Molecule
+from .molecule import Molecule
 
 FlavorProfiles = List[Tuple[str, int]]
 
