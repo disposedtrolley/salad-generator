@@ -12,6 +12,11 @@ class Ingredient:
     """
     def __init__(self, name: str, category: str, flavor_db_entity_id: int,
                  molecules: List[Molecule]):
+        assert name is not None, "name must be supplied"
+        assert category is not None, "category must be supplied"
+        assert flavor_db_entity_id is not None, "flavor_db_entity_id must be supplied"
+        assert molecules is not None, "molecules must be supplied"
+
         self.name = name.lower()
         self.category = category.lower()
         self.id = flavor_db_entity_id
