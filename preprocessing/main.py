@@ -2,6 +2,7 @@
 ingredients and their molecules.
 """
 import os
+import itertools
 import sys
 sys.path.append(".")
 from typing import Dict, List, Tuple
@@ -67,13 +68,9 @@ def __main__():
     
     mappings: List[Tuple[Ingredient, Ingredient, int]] = []
 
-    for i in range(len(all_ings) -1):
-        for x in range(len(all_ings) -1):
-            if i != x:
-                ing_a: Ingredient = all_ings[i]
-                ing_b: Ingredient = all_ings[x]
-                similarity: int = calculate_similarity(ing_a, ing_b)
-                mappings.append((ing_a, ing_b, similarity))
+    for ing_a, ing_b in itertools.combinations(all_ings, 2):
+        similarity: int = calculate_similarity(ing_a, ing_b)
+        mappings.append((ing_a, ing_b, similarity))
     
     mappings.sort(key=lambda tup: tup[2])
 
