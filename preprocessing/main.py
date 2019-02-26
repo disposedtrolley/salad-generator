@@ -1,6 +1,7 @@
 """ Preprocesses the JSON files downloaded from FlavorDB into a set of
 ingredients and their molecules.
 """
+import os
 import sys
 sys.path.append(".")
 from typing import Dict, List
@@ -13,7 +14,14 @@ def read_data(root_path: str) -> List[Dict]:
     subfolders of the directory are used as the "type" property of the
     ingredient.
     """
-    pass
+    ingredients: List[Dict] = []
+
+    for root, _, files in os.walk(root_path):
+        for name in files:
+            file_path: str = os.path.join(root, name)
+            ingredients.append(read_json(file_path))
+
+    return ingredients
 
 def read_json(path: str) -> Dict:
     """ Reads the file at the supplied path into a dictionary.
@@ -23,7 +31,8 @@ def read_json(path: str) -> Dict:
     return json.loads(contents)
 
 def __main__():
-    print(read_json("./data/base/pasta.json"))
+    i = read_data("./data")
+    print(i[0])
 
 if __name__ == "__main__":
     __main__()
