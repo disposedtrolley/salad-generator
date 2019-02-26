@@ -11,7 +11,7 @@ class Molecule:
         assert flavor_profiles is not None, "flavor_profiles must be supplied"
 
         self.pubchem_id = pubchem_id
-        self.name = name
+        self.name = name.lower()
         self.flavor_profiles = flavor_profiles
 
     def get_flavor_profiles(self):
