@@ -35,7 +35,7 @@ class Ingredient:
         self.type = type
 
     def __repr__(self):
-        return f"{self.name} - {self.category} : {self.id}"
+        return f"[{self.name}::{self.category}::{self.id}]"
 
     def _extract_flavor_profiles_from_molecules(self) -> FlavorProfiles:
         """ Returns a sorted list of flavor profiles and associated counts

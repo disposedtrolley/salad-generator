@@ -4,7 +4,7 @@ ingredients and their molecules.
 import os
 import sys
 sys.path.append(".")
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import json
 from models.ingredient import Ingredient, FlavorProfiles, IngredientType
 from models.molecule import Molecule
@@ -44,7 +44,7 @@ def construct_ingredient(json: Dict, type: str) -> Ingredient:
     return Ingredient(json["entity_alias_readable"], json["category_readable"],
                       json["entity_id"], molecules, ingredient_type)
 
-def similarity(ing_a: Ingredient, ing_b: Ingredient) -> float:
+def calculate_similarity(ing_a: Ingredient, ing_b: Ingredient) -> float:
     """ Returns the number of shared molecules between the supplied
     ingredients.
     """
@@ -56,9 +56,29 @@ def similarity(ing_a: Ingredient, ing_b: Ingredient) -> float:
     return len(similar)
 
 def __main__():
-    i = read_data("./data")
-    print(i[0])
-    print(i[0].get_top_flavors(100))
+    all_ings: List[Ingredient] = read_data("./data")
+
+    """
+    Similarity mapping: 
+    (pasta, chicken, 5)
+    (pasta, apple, 1)
+    (chicken, mushroom, 4)
+    """
+    
+    mappings: List[Tuple[Ingredient, Ingredient, int]] = []
+
+    for i in range(len(all_ings) -1):
+        for x in range(len(all_ings) -1):
+            if i != x:
+                ing_a: Ingredient = all_ings[i]
+                ing_b: Ingredient = all_ings[x]
+                similarity: int = calculate_similarity(ing_a, ing_b)
+                mappings.append((ing_a, ing_b, similarity))
+    
+    mappings.sort(key=lambda tup: tup[2])
+
+    for m in mappings:
+        print(m)
 
 if __name__ == "__main__":
     __main__()
