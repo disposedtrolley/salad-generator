@@ -1,5 +1,6 @@
 """Defines the Ingredient class to store processed information on an ingredient.
 """
+from enum import Enum
 import json
 from typing import List, Tuple, Dict
 import math
@@ -7,21 +8,31 @@ from molecule import Molecule
 
 FlavorProfiles = List[Tuple[str, int]]
 
+class IngredientType(Enum):
+    BASE = "base"
+    TOPPING = "topping"
+    PROTEIN = "protein"
+    DRESSING = "dressing"
+
+
 class Ingredient:
     """An ingredient extracted from the FlavorDB database.
     """
     def __init__(self, name: str, category: str, flavor_db_entity_id: int,
-                 molecules: List[Molecule]):
+                 molecules: List[Molecule], type: str):
         assert name is not None, "name must be supplied"
         assert category is not None, "category must be supplied"
         assert flavor_db_entity_id is not None, "flavor_db_entity_id must be supplied"
         assert molecules is not None, "molecules must be supplied"
+        assert type is not None, "type must be supplied"
+        assert isinstance(type, IngredientType), "type must be an IngredientType"
 
         self.name = name.lower()
         self.category = category.lower()
         self.id = flavor_db_entity_id
         self.molecules = molecules
         self.flavor_profiles = self._extract_flavor_profiles_from_molecules()
+        self.type = type
 
     def __repr__(self):
         return f"{self.name} - {self.category} : {self.id}"

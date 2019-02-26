@@ -1,6 +1,6 @@
 import pytest
 from typing import List
-from ingredient import Ingredient, FlavorProfiles
+from ingredient import Ingredient, FlavorProfiles, IngredientType
 from molecule import Molecule
 
 sample_molecules: List[Molecule] = [
@@ -21,24 +21,29 @@ expected_flavor_profiles: FlavorProfiles = [
 
 class TestIngredient:
     def test_sets_instance_vars(self):
-        pasta = Ingredient("Pasta", "Bakery", 484, sample_molecules)
+        pasta = Ingredient("Pasta", "Bakery", 484, sample_molecules,
+                           IngredientType.BASE)
         assert pasta.name == "pasta"
         assert pasta.category == "bakery"
         assert pasta.id == 484
         assert pasta.molecules == sample_molecules
+        assert pasta.type == IngredientType.BASE
 
     def test_extract_flavor_profiles_from_molecules(self):
-        pasta = Ingredient("Pasta", "Bakery", 484, sample_molecules)
+        pasta = Ingredient("Pasta", "Bakery", 484, sample_molecules,
+                           IngredientType.BASE)
 
         assert pasta._extract_flavor_profiles_from_molecules()  == expected_flavor_profiles
 
     def test_get_top_flavors(self):
-        pasta = Ingredient("Pasta", "Bakery", 484, sample_molecules)
+        pasta = Ingredient("Pasta", "Bakery", 484, sample_molecules,
+                           IngredientType.BASE)
 
         assert pasta.get_top_flavors() == expected_flavor_profiles[:2]
 
     def test_get_top_flavor(self):
-        pasta = Ingredient("Pasta", "Bakery", 484, sample_molecules)
+        pasta = Ingredient("Pasta", "Bakery", 484, sample_molecules,
+                           IngredientType.BASE)
 
         assert pasta.get_top_flavor() == expected_flavor_profiles[0]
 
