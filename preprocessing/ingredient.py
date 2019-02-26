@@ -23,7 +23,7 @@ class Ingredient:
         self.molecules = molecules
         self.flavor_profiles = self._extract_flavor_profiles_from_molecules()
 
-    def __str__(self):
+    def __repr__(self):
         return f"{self.name} - {self.category} : {self.id}"
 
     def _extract_flavor_profiles_from_molecules(self) -> FlavorProfiles:
