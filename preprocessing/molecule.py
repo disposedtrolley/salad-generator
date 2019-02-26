@@ -14,6 +14,9 @@ class Molecule:
         self.name = name.lower()
         self.flavor_profiles = flavor_profiles
 
+    def __repr__(self):
+        return f"{self.pubchem_id} - {self.name}"
+
     def get_flavor_profiles(self):
         """Returns the molecule's flavor profiles.
         """

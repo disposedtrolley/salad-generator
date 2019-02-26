@@ -58,6 +58,11 @@ class Ingredient:
         """
         return self.flavor_profiles[0]
 
+    def get_molecules(self) -> List[Molecule]:
+        """Returns this ingredient's molecules
+        """
+        return self.molecules
+
     def json(self):
         """Returns a stringified JSON representation of the ingredient.
         """
