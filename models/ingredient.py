@@ -88,8 +88,25 @@ class Ingredient:
     def get_name(self) -> str:
         return self.name
 
+    def get_id(self) -> int:
+        return self.id
+
     def json(self):
         """Returns a stringified JSON representation of the ingredient.
         """
         return json.dumps(self.__dict__)
+
+    def __eq__(self, other) -> bool:
+        if isinstance(other, Ingredient):
+            return self.id == other.id
+        return False
+
+    def __neq__(self, other) -> bool:
+        if isinstance(other, Ingredient):
+            return self.id != other.id
+        return False
+
+    def __hash__(self):
+        return self.id
+
 

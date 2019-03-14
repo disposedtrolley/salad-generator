@@ -56,8 +56,8 @@ def calculate_similarity(ing_a: Ingredient, ing_b: Ingredient) -> float:
 
     return len(similar)
 
-def create_mappings(data_path: str) -> Tuple[Ingredient, Ingredient, int]:
-    all_ings: List[Ingredient] = read_data(data_path)
+def __main__():
+    all_ings: List[Ingredient] = read_data("./data")
 
     """
     Similarity mapping:
@@ -74,12 +74,8 @@ def create_mappings(data_path: str) -> Tuple[Ingredient, Ingredient, int]:
 
     mappings.sort(key=lambda tup: tup[2], reverse=True)
 
-    return mappings
-
-
-if __name__ == "__main__":
-    DATA_PATH: str = "./data"
-    mappings = create_mappings(DATA_PATH)
-
     for m in mappings:
         print(m)
+
+if __name__ == "__main__":
+    __main__()

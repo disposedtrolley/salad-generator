@@ -7,6 +7,9 @@ verify_ssl = true
 
 [packages]
 pytest = "*"
+networkx = "*"
+jupyterlab = "*"
+plotnine = {extras = ["all"],version = "*"}
 
 [requires]
 python_version = "3.7"
