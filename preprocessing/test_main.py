@@ -1,7 +1,7 @@
 import pytest
 from typing import List, Dict
 from models.ingredient import IngredientType, Ingredient
-from .main import construct_ingredient, similarity
+from .main import construct_ingredient, calculate_similarity
 
 test_json: Dict = {
     "category_readable": "Bakery",
@@ -53,4 +53,4 @@ class TestMain:
         ing_1: Ingredient = construct_ingredient(test_json, "base")
         ing_2: Ingredient = construct_ingredient(test_json_2, "base")
 
-        assert similarity(ing_1, ing_2) == 1
+        assert calculate_similarity(ing_1, ing_2) == 1

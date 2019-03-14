@@ -1,6 +1,7 @@
 """ Preprocesses the JSON files downloaded from FlavorDB into a set of
 ingredients and their molecules.
 """
+import networkx as nx
 import os
 import itertools
 import sys
@@ -20,7 +21,7 @@ def read_data(root_path: str) -> List[Ingredient]:
     for root, _, files in os.walk(root_path):
         for name in files:
             file_path: str = os.path.join(root, name)
-            parent_folder_name: str = file_path.split("/")[2]
+            parent_folder_name: str = file_path.split("/")[len(file_path.split("/")) - 2]
             ingredient: Ingredient = construct_ingredient(read_json(file_path),
                                                           parent_folder_name)
             ingredients.append(ingredient)
