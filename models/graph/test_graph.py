@@ -37,3 +37,8 @@ class TestGraph:
         spinach_nbrs_weakest = sorted(spinach_nbrs, key=lambda node: node[1]["weight"])
         spinach_nbrs_closest = G.closest_neighbors(spinach, 1)
         assert spinach_nbrs_weakest[0] != spinach_nbrs_closest[0]
+
+    def test_can_get_weight_between_nodes(self):
+        G = Graph(self.sample_mappings)
+        weight = G.get_weight_between("spinach", "tomato")
+        assert weight == 114

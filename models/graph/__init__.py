@@ -54,3 +54,12 @@ class Graph:
         neighbors = self.get_neighbors_of(node, ingredient_type)
         sorted_neighbors = sorted(neighbors, key=lambda node: node[1]['weight'], reverse=True)
         return sorted_neighbors[:count]
+
+    def get_weight_between(self, node_a: str, node_b: str):
+        """
+        Returns the weight between two given nodes from their names.
+        """
+        node_a_in_graph = self.get_node_by_name(node_a)
+        node_b_in_graph = self.get_node_by_name(node_b)
+
+        return self.G.get_edge_data(node_a_in_graph, node_b_in_graph)['weight']
