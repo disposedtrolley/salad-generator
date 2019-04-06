@@ -24,7 +24,7 @@ class Traverser:
         IngredientType.DRESSING: (1, 1)
     }
 
-    def __init__(self, graph: Graph, limits):
+    def __init__(self, graph: Graph, limits=None):
         self.graph = graph
         self.ingredients = graph.get_nodes()
         self.salad_composition = []
@@ -59,6 +59,9 @@ class Traverser:
         """
         return self.ingredients
 
+    def get_composition(self):
+        return self.salad_composition
+
     def _filter_composition_on_ingredient_type(self, ingredient_type):
         filtered_list = list(filter(lambda ig: ig.type == ingredient_type, self.salad_composition))
         return filtered_list
@@ -83,6 +86,9 @@ class Traverser:
         filtered_list = \
             self._filter_composition_on_ingredient_type(ingredient_type)
         return len(filtered_list) < allowable_range[0]
+
+    def add_ingredient_to_composition(self, ingredient):
+        self.salad_composition.append(ingredient)
 
     def _print_ingredient_choices(self, remaining_choices):
         """
