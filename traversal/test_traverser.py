@@ -35,6 +35,30 @@ class TestTraverser:
         t = Traverser(self.G, custom_limits)
         assert t.get_limits() == custom_limits
 
+    def test_limit_helpers(self):
+        t = Traverser(self.G)
+
+        # Check default limits are computed properly.
+        assert t._can_add_more(IngredientType.BASE) is True
+        assert t._needs_more(IngredientType.BASE) is True
+
+        ing_base_pasta = self.G.get_node_by_name("pasta")
+        ing_base_spinach = self.G.get_node_by_name("spinach")
+
+        # Add one base to the composition. Default limits says we can have a
+        # minimum of one base and a maximum of two, so _can_add_more() should
+        # be True as we have not reached the maximum, but _needs_more() should
+        # be False as we've reached the minimum.
+        t.add_ingredient_to_composition(ing_base_pasta)
+        assert t._can_add_more(IngredientType.BASE) is True
+        assert t._needs_more(IngredientType.BASE) is False
+
+        # Add another base to the composition. We now should have reached the
+        # maximum allowed by the default limits.
+        t.add_ingredient_to_composition(ing_base_spinach)
+        assert t._can_add_more(IngredientType.BASE) is False
+        assert t._needs_more(IngredientType.BASE) is False
+
     def test_composition_filtering(self):
         t = Traverser(self.G)
         assert t.get_composition() == []
