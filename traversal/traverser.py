@@ -90,11 +90,11 @@ class Traverser:
     def add_ingredient_to_composition(self, ingredient):
         self.salad_composition.append(ingredient)
 
-    def _print_ingredient_choices(self, remaining_choices):
+    def _print_ingredient_choices(self, candidates):
         """
         Displays a list of ingredient choices for the user
         to select. The index of the ingredient is the choice
         key value.
         """
-        for (idx, ingredient) in enumerate(remaining_choices):
-            print(f"{idx}. {ingredient.name}")
+        for (idx, candidate) in enumerate(candidates):
+            print(f"{idx:<10} {candidate[0].name:<20} {candidate[1]:<10}")
