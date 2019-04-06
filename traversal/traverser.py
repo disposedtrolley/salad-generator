@@ -43,7 +43,8 @@ class Traverser:
         assert self.ingredients is not None
         assert len(self.ingredients) >= 1
 
-        self._perform_traversal_iteration()
+        while True:
+            self._perform_traversal_iteration()
 
     def _perform_traversal_iteration(self):
         """
@@ -59,6 +60,19 @@ class Traverser:
         self._pop_used_ingredients()
         next_candidates = self._get_next_candidates()
         self._print_ingredient_choices(next_candidates)
+
+        # @TODO clearly the index selected by the user belongs to the
+        # temporary candidates list and not our ingredients instance property
+        # duh.
+        selected_ing = self.ingredients[self._get_user_selection()]
+
+        self.add_ingredient_to_composition(selected_ing)
+
+    def _get_user_selection(self):
+        selection = -1
+        while selection < 0 or selection > len(self.ingredients):
+            selection = int(input("Choose an ingredient: "))
+        return selection
 
     def get_limits(self):
         return self.salad_composition_limits
