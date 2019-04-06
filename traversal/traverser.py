@@ -42,12 +42,28 @@ class Traverser:
         assert self.graph is not None
         assert self.ingredients is not None
         assert len(self.ingredients) >= 1
-        self._print_ingredient_choices(self._get_remaining_candidates())
+
+        self._perform_traversal_iteration()
+
+    def _perform_traversal_iteration(self):
+        """
+        Performs one interation of traversal through the ingredient
+        graph by executing the following:
+
+        1) Refreshing the ingredients instance property to remove used
+           ingredients.
+        2) Calculating the next best candidates.
+        3) Presenting the choices to the user.
+        4) Capturing the next choice taken by the user.
+        """
+        self._pop_used_ingredients()
+        next_candidates = self._get_next_candidates()
+        self._print_ingredient_choices(next_candidates)
 
     def get_limits(self):
         return self.salad_composition_limits
 
-    def _get_remaining_candidates(self):
+    def _get_next_candidates(self):
         """
         Returns a list of strongest remaining ingredient candidates
         based on:
@@ -57,7 +73,27 @@ class Traverser:
         2) The aggregate strength of the shared molecules of
            previously selected ingredients to unselected candidates.
         """
-        return self.ingredients
+        candidates = []  # List of tuples of (Ingredient, Aggregate Strength)
+
+        for candidate in self.ingredients:
+            # Calculate the aggregate strength between the candidate ingredient
+            # and all ingredients in the salad composition.
+            aggregate_strength = 0
+
+            for ing in self.salad_composition:
+                aggregate_strength += self.graph.get_weight_between(ing.get_name(),
+                                                                candidate.get_name())
+            candidates.append((candidate, aggregate_strength))
+
+        return sorted(candidates, key=lambda c: c[1], reverse=True)
+
+    def _pop_used_ingredients(self):
+        """
+        Removes items from the ingredients instance property which have
+        been incorporated into the salad composition.
+        """
+        self.ingredients = [i for i in self.ingredients if i not in
+                            self.salad_composition]
 
     def get_composition(self):
         return self.salad_composition
