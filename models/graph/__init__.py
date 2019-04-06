@@ -30,6 +30,9 @@ class Graph:
                 return n
         return None
 
+    def get_nodes(self):
+        return list(self.G.nodes)
+
     """
     Returns all neighbours of a given ingredient. Optionally filters the neighbors list
     to include only ingredients of a given type.
