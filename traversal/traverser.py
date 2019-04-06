@@ -1,8 +1,10 @@
 import sys
 sys.path.append("..")
 from typing import Dict, List, Tuple
-from models.ingredient import IngredientType
+from models.ingredient import IngredientType, Ingredient
 from models.graph import Graph
+
+CandidateIngredient = Tuple[Ingredient, int]
 
 class Traverser:
     """
@@ -58,17 +60,17 @@ class Traverser:
         4) Capturing the next choice taken by the user.
         """
         self._pop_used_ingredients()
-        next_candidates = self._get_next_candidates()
+        next_candidates: List[CandidateIngredient] = self._get_next_candidates()
         self._print_ingredient_choices(next_candidates)
-
-        # @TODO clearly the index selected by the user belongs to the
-        # temporary candidates list and not our ingredients instance property
-        # duh.
-        selected_ing = self.ingredients[self._get_user_selection()]
-
+        selected_ing = next_candidates[self._get_user_selection()][0]
         self.add_ingredient_to_composition(selected_ing)
 
     def _get_user_selection(self):
+        """
+        Continuously prompts the user for an ingredient selection until a valid
+        input is received. A valid input is an integer within the bounds of the
+        indices of the ingredients instance property.
+        """
         selection = -1
         while selection < 0 or selection > len(self.ingredients):
             selection = int(input("Choose an ingredient: "))
@@ -77,7 +79,7 @@ class Traverser:
     def get_limits(self):
         return self.salad_composition_limits
 
-    def _get_next_candidates(self):
+    def _get_next_candidates(self) -> List[CandidateIngredient]:
         """
         Returns a list of strongest remaining ingredient candidates
         based on:
@@ -87,7 +89,7 @@ class Traverser:
         2) The aggregate strength of the shared molecules of
            previously selected ingredients to unselected candidates.
         """
-        candidates = []  # List of tuples of (Ingredient, Aggregate Strength)
+        candidates: List[CandidateIngredient] = []
 
         for candidate in self.ingredients:
             # Calculate the aggregate strength between the candidate ingredient
@@ -140,7 +142,7 @@ class Traverser:
     def add_ingredient_to_composition(self, ingredient):
         self.salad_composition.append(ingredient)
 
-    def _print_ingredient_choices(self, candidates):
+    def _print_ingredient_choices(self, candidates: List[CandidateIngredient]):
         """
         Displays a list of ingredient choices for the user
         to select. The index of the ingredient is the choice
