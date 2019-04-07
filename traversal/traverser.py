@@ -77,8 +77,14 @@ class Traverser:
         indices of the ingredients instance property.
         """
         selection = -1
-        while selection < 0 or selection > len(self.ingredients):
-            selection = int(input("Choose an ingredient: "))
+        while selection < 0 or selection >= len(self.ingredients):
+            user_input = input("Choose an ingredient: ")
+            try:
+                selection = int(user_input)
+                print(selection)
+            except ValueError as e:
+                print("Please enter a number. Stop trying to break it.")
+            print("Selection out of range you idiot.")
         return selection
 
     def get_limits(self):
