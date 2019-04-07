@@ -92,14 +92,15 @@ class Traverser:
         candidates: List[CandidateIngredient] = []
 
         for candidate in self.ingredients:
-            # Calculate the aggregate strength between the candidate ingredient
-            # and all ingredients in the salad composition.
-            aggregate_strength = 0
+            if self._needs_more(candidate.type) or self._can_add_more(candidate.type):
+                # Calculate the aggregate strength between the candidate ingredient
+                # and all ingredients in the salad composition.
+                aggregate_strength = 0
 
-            for ing in self.salad_composition:
-                aggregate_strength += self.graph.get_weight_between(ing.get_name(),
+                for ing in self.salad_composition:
+                    aggregate_strength += self.graph.get_weight_between(ing.get_name(),
                                                                 candidate.get_name())
-            candidates.append((candidate, aggregate_strength))
+                candidates.append((candidate, aggregate_strength))
 
         return sorted(candidates, key=lambda c: c[1], reverse=True)
 
