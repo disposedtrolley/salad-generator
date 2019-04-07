@@ -97,11 +97,22 @@ class Traverser:
                 # and all ingredients in the salad composition.
                 aggregate_strength = 0
 
+                # We apply a set of weightings when computing the
+                # strength.
+                # The first ingredient in the composition has the lowest
+                # weighting, increasing evenly until the most recently
+                # added ingredient is reached. The increment step is
+                # calculated as 1/len(salad_composition).
+                ingredients_in_composition = len(self.salad_composition)
+                curr_weighting = 1/ingredients_in_composition \
+                        if ingredients_in_composition > 0 else 1
                 for ing in self.salad_composition:
-                    aggregate_strength += self.graph.get_weight_between(ing.get_name(),
-                                                                candidate.get_name())
-                candidates.append((candidate, aggregate_strength))
-
+                    raw_strength = self.graph.get_weight_between(ing.get_name(),
+                                                                 candidate.get_name())
+                    aggregate_strength += raw_strength * curr_weighting
+                    curr_weighting *= 2
+                candidates.append((candidate,
+                                   aggregate_strength * curr_weighting))
         return sorted(candidates, key=lambda c: c[1], reverse=True)
 
     def _pop_used_ingredients(self):
