@@ -43,10 +43,11 @@ class Traverser:
         """
         assert self.graph is not None
         assert self.ingredients is not None
-        assert len(self.ingredients) >= 1
+        assert len(self.ingredients) > 0
 
-        while True:
-            self._perform_traversal_iteration()
+        while self._perform_traversal_iteration():
+            self._print_salad_composition()
+        self._print_salad_composition()
 
     def _perform_traversal_iteration(self):
         """
@@ -59,11 +60,15 @@ class Traverser:
         3) Presenting the choices to the user.
         4) Capturing the next choice taken by the user.
         """
-        self._pop_used_ingredients()
         next_candidates: List[CandidateIngredient] = self._get_next_candidates()
-        self._print_ingredient_choices(next_candidates)
-        selected_ing = next_candidates[self._get_user_selection()][0]
-        self.add_ingredient_to_composition(selected_ing)
+        has_candidates_remaining = len(next_candidates) > 0
+        if has_candidates_remaining:
+            self._print_ingredient_choices(next_candidates)
+            selected_ing = next_candidates[self._get_user_selection()][0]
+            self.add_ingredient_to_composition(selected_ing)
+            self._pop_used_ingredients()
+            return True
+        return False
 
     def _get_user_selection(self):
         """
@@ -162,3 +167,16 @@ class Traverser:
         """
         for (idx, candidate) in enumerate(candidates):
             print(f"{idx:<10} {candidate[0].name:<20} {candidate[1]:<10}")
+        print("\n")
+
+    def _print_salad_composition(self):
+        """
+        Displays ingredients in the current salad composition.
+        """
+        print("\n")
+        print("CURRENT SALAD COMPOSITION")
+        print("-------------------------")
+        for ing in self.salad_composition:
+            print(f"{ing.get_type():<30} {ing.get_name():<10}")
+        print("-------------------------")
+        print("\n")
